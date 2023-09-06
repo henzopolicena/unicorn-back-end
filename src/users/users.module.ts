@@ -11,6 +11,7 @@ import { UserIdCheckMiddleware } from 'src/middlewares/user-id-check/user-id-che
 
 @Module({
   imports: [PrismaModule],
+  exports: [UsersService],
   controllers: [UsersController],
   providers: [UsersService],
 })
