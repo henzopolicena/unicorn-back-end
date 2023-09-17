@@ -1,11 +1,10 @@
 import {
   Controller,
-  Get,
   Post,
   Body,
-  Patch,
-  Param,
-  Delete,
+  UseGuards,
+  Req,
+  Headers,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginAuthDto } from './dto/login-auth.dto';
@@ -13,6 +12,7 @@ import { SignUpAuthDto } from './dto/sign-up-auth.dto';
 import { ForgetPasswordAuthDto } from './dto/forget-password.dto';
 import { ResetPasswordAuthDto } from './dto/reset-password-auth.dto';
 import { UsersService } from 'src/users/users.service';
+import { AuthGuard } from 'src/guards/auth/auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -22,7 +22,7 @@ export class AuthController {
   ) {}
 
   @Post('login')
-  async login(@Body() {username, password}: LoginAuthDto) {
+  async login(@Body() { username, password }: LoginAuthDto) {
     return this.authService.login(username, password);
   }
 
@@ -37,7 +37,13 @@ export class AuthController {
   }
 
   @Post('reset-password')
-  async resetPassword(@Body() {token, password}: ResetPasswordAuthDto) {
+  async resetPassword(@Body() { token, password }: ResetPasswordAuthDto) {
     this.authService.resetPassword(token, password);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('me')
+  async me(@Req() req) {
+    return { access_token: req.access_token, user: req.user };
   }
 }

@@ -17,7 +17,7 @@ export class AuthService {
     private readonly usersService: UsersService,
   ) {}
 
-  async createToken(user: { username: string; id?: number; email: string }) {
+  createToken(user: { username: string; id?: number; email: string }) {
     const payload = {
       username: user.username,
       sub: user.id,
@@ -35,9 +35,9 @@ export class AuthService {
     };
   }
 
-  async checkToken(token: string) {
+  checkToken(token: string) {
     try {
-      return await this.jwtService.verify(token, {
+      return this.jwtService.verify(token, {
         secret: process.env.JWT_SECRET,
         issuer: 'auth/login',
         audience: 'users',
