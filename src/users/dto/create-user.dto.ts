@@ -16,7 +16,7 @@ export class CreateUserDto {
     minNumbers: 1,
     minSymbols: 1,
   })
-  readonly password: string;
+  password: string;
 
   @IsString()
   @IsOptional()
